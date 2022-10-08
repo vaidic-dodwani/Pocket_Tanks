@@ -13,12 +13,13 @@ const angle_display = document.getElementById("angle_display");
 const bomb = document.getElementById("bomb");
 var angle = [45, 45];
 var dist = [10, 10];
-var turn = 0;
+var turn = 1;
 var current_move = [0, 0];
 var move_name = ["Small Shot", "Medium Shot", "Big Shot"];
 var power = [50, 50];
 var move_count = [5, 5];
 var loopcntrl = [0, 0];
+const pi = 3.14159;
 
 bombplacement();
 
@@ -71,28 +72,67 @@ function angle_change(increase) {
   }
 }
 
+function update_control_bar() {
+  move_display.innerHTML = "Moves:" + move_count[turn];
+  move_name_display.innerHTML = move_name[current_move[turn]];
+  power_display.innerHTML = "Power: " + power[turn];
+  angle_display.innerHTML = "Angle: " + angle[turn];
+}
+
 function bombplacement() {
   if (!turn) {
-    bomb.style.bottom = 30 + "vh";
-    bomb.style.left = dist[0] + 4 + "vw";
+    bomb.style.bottom = 40 + "vh";
+    bomb.style.left = dist[0] + 9 + "vw";
     bomb.style.right = "";
   } else {
-    bomb.style.bottom = 30 + "vh";
+    bomb.style.bottom = 40 + "vh";
     bomb.style.left = "";
-    bomb.style.right = dist[1] + 4 + "vw";
+    bomb.style.right = dist[1] + 9 + "vw";
   }
 }
 
 function fire() {
   var time = 0;
   var y;
+  var x;
   if (!turn) {
     loopcntrl[0] = setInterval(function () {
-      time += 0.005;
-      y = (power[turn] / 4) * time - 0.5 * 10 * time * time - 30;
-      console.log(y);
+      time += 0.01;
+
+      x =
+        ((power[1] * Math.cos((angle[0] * pi) / 180)) / 2) * time + dist[0] + 9;
+      y =
+        ((power[1] * Math.sin((angle[0] * pi) / 180)) / 2) * time -
+        0.5 * 10 * time * time +
+        40;
+      bomb.style.left = x + "vw";
       bomb.style.bottom = y + "vh";
-    }, 200);
+      if (y < 20) {
+        clearInterval(loopcntrl[0]);
+        bombplacement();
+        update_control_bar();
+      }
+    }, 10);
+    turn = 1;
+  } else {
+    loopcntrl[1] = setInterval(function () {
+      time += 0.01;
+
+      x =
+        ((power[1] * Math.cos((angle[1] * pi) / 180)) / 2) * time + dist[0] + 9;
+      y =
+        ((power[1] * Math.sin((angle[1] * pi) / 180)) / 2) * time -
+        0.5 * 10 * time * time +
+        40;
+      bomb.style.right = x + "vw";
+      bomb.style.bottom = y + "vh";
+      if (y < 20) {
+        clearInterval(loopcntrl[1]);
+        bombplacement();
+        update_control_bar();
+      }
+    }, 10);
+    turn = 0;
   }
 }
 
