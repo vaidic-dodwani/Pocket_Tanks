@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#status_window {
+  background-color: aqua;
+  height: 7vh;
+}
+
+#game {
+  background-color: cadetblue;
+  height: 80vh;
+}
+
+#bomb {
+  position: absolute;
+  width: 2vw;
+  z-index: 5;
+}
+#tank_facing_right {
+  overflow: visible;
+  position: absolute;
+  left: 10vw;
+  bottom: 18vh;
+}
+
+#body_facing_right {
+  width: 10vw;
+}
+
+#shooter_facing_right {
+  position: absolute;
+  bottom: 14vh;
+  left: -1vw;
+  rotate: -45deg;
+}
+
+#tank_facing_left {
+  position: absolute;
+  right: 10vw;
+  bottom: 18vh;
+  overflow: visible;
+}
+
+#body_facing_left {
+  width: 10vw;
+}
+
+#shooter_facing_left {
+  position: absolute;
+  bottom: 14vh;
+  right: -1vw;
+  rotate: 45deg;
+}
+
+#controls {
+  display: flex;
+  position: absolute;
+  justify-content: space-around;
+  text-align: center;
+  width: 100vw;
+  bottom: 0;
+  height: 13vh;
+  background-color: saddlebrown;
+  font-size: 2rem;
+}
+
+#move_name_display {
+  cursor: pointer;
+}

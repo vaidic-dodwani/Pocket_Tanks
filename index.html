@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="status_window"></div>
+    <div id="game">
+      <img 
+         id="bomb"
+          src="..\Assests\Images\bomb.png"
+          alt="bomb"
+        />
+      <div id="tank_facing_right">
+        <img 
+         id="shooter_facing_right"
+          src="..\Assests\Images\shooter_facing_right.png"
+          alt="shooter facing right"
+        />
+        <img
+          id="body_facing_right"
+          src="..\Assests\Images\tank_facing_right.png"
+          alt="body facing right"
+        />
+        
+        </div>
+      <div id="tank_facing_left">
+      <img 
+        id="shooter_facing_left"
+        src="..\Assests\Images\shooter_facing_left.png"
+        alt="shooter facing left"
+      />
+      <img
+        id="body_facing_left"
+        src="..\Assests\Images\tank_facing_left.png"
+        alt="body facing left"
+      />
+      
+    </div>
+    <div id="controls">
+      <p id="move_display">Move: 5
+      </p>
+      <p id="move_name_display" onclick="move_name_change()">Smoll Shot</p>
+      <p id="power_display">Power: 50</p>
+      <p id="angle_display">Angle</p>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
