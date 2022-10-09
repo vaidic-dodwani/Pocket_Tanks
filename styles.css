@@ -8,20 +8,22 @@
   display: flex;
   background-color: aqua;
   height: 7vh;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 10%;
   align-items: center;
-  /* display: inline-block; */
 }
 
 #health_1{
   width: 40%;
   background-color: blueviolet;
+  height: 50%;
   
 }
 
 #health_2{
   width: 40%;
   background-color: blue;
+  height: 50%;
 }
 
 #game {
