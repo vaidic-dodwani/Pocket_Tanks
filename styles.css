@@ -27,7 +27,7 @@
 }
 
 #game {
-  background-color: cadetblue;
+  background: linear-gradient(to top, #b63bcc, #170716);
   height: 80vh;
 }
 
