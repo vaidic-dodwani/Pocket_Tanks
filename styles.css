@@ -13,13 +13,12 @@
   /* display: inline-block; */
 }
 
-#health_1{
+#health_1 {
   width: 40%;
   background-color: blueviolet;
-  
 }
 
-#health_2{
+#health_2 {
   width: 40%;
   background-color: blue;
 }
@@ -32,7 +31,7 @@
 #bomb {
   position: absolute;
   width: 2vw;
-  /* z-index: 5; */
+  z-index: 5;
 }
 #tank_facing_right {
   overflow: visible;

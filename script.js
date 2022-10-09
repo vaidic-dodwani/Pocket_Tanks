@@ -13,7 +13,7 @@ const angle_display = document.getElementById("angle_display");
 const bomb = document.getElementById("bomb");
 var angle = [45, 45];
 var dist = [10, 10];
-var turn = 0;
+var turn = 1;
 var current_move = [0, 0];
 var move_name = ["Small Shot", "Medium Shot", "Big Shot"];
 var power = [50, 50];
@@ -22,29 +22,6 @@ var loopcntrl = [0, 0];
 const pi = 3.14159;
 
 bombplacement();
-
-function move(direction) {
-  if (!turn) {
-    if (direction == 1) {
-      dist[turn] += 2;
-      tank[turn].style.left = dist[turn] + "vw";
-    } else {
-      dist[turn] -= 2;
-      tank[turn].style.left = dist[turn] + "vw";
-    }
-  } else {
-    if (direction == 1) {
-      dist[turn] += 2;
-      tank[turn].style.right = dist[turn] + "vw";
-    } else {
-      dist[turn] -= 2;
-      tank[turn].style.right = dist[turn] + "vw";
-    }
-  }
-  move_count[turn]--;
-  move_display.innerHTML = "Moves:" + move_count[turn];
-  bombplacement();
-}
 
 function move_name_change() {
   if (current_move[turn] == 2) current_move[turn] = 0;
@@ -70,6 +47,25 @@ function angle_change(increase) {
     shooter[turn].style.rotate = angle[turn] + "deg";
     angle_display.innerHTML = "Angle: " + angle[turn];
   }
+}
+
+function move_animation(direction) {
+  var checker = 0;
+  if (turn) direction *= -1;
+  var mover = setInterval(function () {
+    checker += 0.05;
+    if (!turn) tank[turn].style.left = dist[turn] + direction * checker + "vw";
+    else tank[turn].style.right = dist[turn] + direction * checker + "vw";
+    if (checker >= 2) {
+      clearInterval(mover);
+      dist[turn] += 2 * direction;
+      bombplacement();
+    }
+  }, 10);
+  move_count[turn]--;
+  move_display.innerHTML = "Moves:" + move_count[turn];
+
+  update_control_bar();
 }
 
 function update_control_bar() {
@@ -98,11 +94,10 @@ function fire() {
   if (!turn) {
     loopcntrl[0] = setInterval(function () {
       time += 0.01;
-
       x =
-        ((power[1] * Math.cos((angle[0] * pi) / 180)) / 2) * time + dist[0] + 9;
+        ((power[0] * Math.cos((angle[0] * pi) / 180)) / 2) * time + dist[0] + 9;
       y =
-        ((power[1] * Math.sin((angle[0] * pi) / 180)) / 2) * time -
+        ((power[0] * Math.sin((angle[0] * pi) / 180)) / 2) * time -
         0.5 * 10 * time * time +
         40;
       bomb.style.left = x + "vw";
@@ -119,7 +114,7 @@ function fire() {
       time += 0.01;
 
       x =
-        ((power[1] * Math.cos((angle[1] * pi) / 180)) / 2) * time + dist[0] + 9;
+        ((power[1] * Math.cos((angle[1] * pi) / 180)) / 2) * time + dist[1] + 9;
       y =
         ((power[1] * Math.sin((angle[1] * pi) / 180)) / 2) * time -
         0.5 * 10 * time * time +
@@ -140,20 +135,12 @@ window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowLeft":
       if (move_count[turn] > 0) {
-        if (!turn) {
-          move(-1);
-        } else {
-          move(1);
-        }
+        move_animation(-1);
       }
       break;
     case "ArrowRight":
       if (move_count[turn] > 0) {
-        if (!turn) {
-          move(1);
-        } else {
-          move(-1);
-        }
+        move_animation(1);
       }
       break;
     case "ArrowUp":
