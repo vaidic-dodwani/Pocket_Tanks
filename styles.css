@@ -8,19 +8,27 @@
   display: flex;
   background-color: aqua;
   height: 7vh;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  /* display: inline-block; */
+}
+.health_container {
+  height: 3vh;
+  width: 35vh;
+  border-style: solid;
+  border: 1rem;
+  border-color: black;
+  background-color: azure;
 }
 
-#health_1 {
-  width: 40%;
-  background-color: blueviolet;
+#health_bar_1 {
+  height: 3vh;
+  background-color: red;
 }
 
-#health_2 {
-  width: 40%;
-  background-color: blue;
+#health_bar_2 {
+  float: right;
+  height: 3vh;
+  background-color: red;
 }
 
 #game {

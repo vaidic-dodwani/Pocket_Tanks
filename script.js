@@ -6,6 +6,10 @@ const tank = [
   document.getElementById("tank_facing_right"),
   document.getElementById("tank_facing_left"),
 ];
+const health_display = [
+  document.getElementById("health_bar_1"),
+  document.getElementById("health_bar_2"),
+];
 const move_display = document.getElementById("move_display");
 const move_name_display = document.getElementById("move_name_display");
 const power_display = document.getElementById("power_display");
@@ -23,6 +27,7 @@ var loopcntrl = [0, 0];
 const pi = 3.14159;
 
 bombplacement();
+health_bar_update();
 
 function move_name_change() {
   if (current_move[turn] == 2) current_move[turn] = 0;
@@ -48,6 +53,16 @@ function angle_change(increase) {
     shooter[turn].style.rotate = angle[turn] + "deg";
     angle_display.innerHTML = "Angle: " + angle[turn];
   }
+}
+
+function damage() {
+  health[turn] -= 20;
+  health_bar_update();
+}
+
+function health_bar_update() {
+  health_display[0].style.width = health[0] + "%";
+  health_display[1].style.width = health[1] + "%";
 }
 
 function move_animation(direction) {
@@ -110,8 +125,8 @@ function fire() {
       bomb.style.bottom = y + "vh";
       if (y < 20) {
         clearInterval(loopcntrl[0]);
+        if (isHitting(x)) damage();
         bombplacement();
-        isHitting(x);
         update_control_bar();
       }
     }, 10);
@@ -132,8 +147,8 @@ function fire() {
       bomb.style.bottom = y + "vh";
       if (y < 20) {
         clearInterval(loopcntrl[1]);
+        if (isHitting(x)) damage();
         bombplacement();
-        isHitting(x);
         update_control_bar();
       }
     }, 10);
