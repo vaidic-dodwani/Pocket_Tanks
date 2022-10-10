@@ -25,6 +25,10 @@
   background-color: red;
 }
 
+#turn_display {
+  font-size: 2rem;
+}
+
 #health_bar_2 {
   float: right;
   height: 3vh;
@@ -40,6 +44,7 @@
   position: absolute;
   width: 2vw;
   z-index: 5;
+  display: none;
 }
 #tank_facing_right {
   overflow: visible;

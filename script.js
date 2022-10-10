@@ -15,6 +15,7 @@ const move_name_display = document.getElementById("move_name_display");
 const power_display = document.getElementById("power_display");
 const angle_display = document.getElementById("angle_display");
 const bomb = document.getElementById("bomb");
+const turn_display = document.getElementById("turn_display");
 var angle = [45, 45];
 var dist = [10, 10];
 var turn = 0;
@@ -28,6 +29,7 @@ const pi = 3.14159;
 
 bombplacement();
 health_bar_update();
+update_control_bar();
 
 function move_name_change() {
   if (current_move[turn] == 2) current_move[turn] = 0;
@@ -88,6 +90,7 @@ function isHitting(x) {
   else return 0;
 }
 function update_control_bar() {
+  turn_display.innerHTML = "Player " + (turn + 1) + "'s Turn";
   move_display.innerHTML = "Moves:" + move_count[turn];
   move_name_display.innerHTML = move_name[current_move[turn]];
   power_display.innerHTML = "Power: " + power[turn];
@@ -110,6 +113,7 @@ function fire() {
   var time = 0;
   var y;
   var x;
+  bomb.style.display = "block";
   if (!turn) {
     loopcntrl[0] = setInterval(function () {
       time += 0.01;
@@ -127,6 +131,7 @@ function fire() {
         clearInterval(loopcntrl[0]);
         if (isHitting(x)) damage();
         bombplacement();
+        bomb.style.display = "none";
         update_control_bar();
       }
     }, 10);
@@ -149,6 +154,7 @@ function fire() {
         clearInterval(loopcntrl[1]);
         if (isHitting(x)) damage();
         bombplacement();
+        bomb.style.display = "none";
         update_control_bar();
       }
     }, 10);
