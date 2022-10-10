@@ -16,6 +16,7 @@ const power_display = document.getElementById("power_display");
 const angle_display = document.getElementById("angle_display");
 const bomb = document.getElementById("bomb");
 const turn_display = document.getElementById("turn_display");
+const explosion = document.getElementById("explosion");
 var angle = [45, 45];
 var dist = [10, 10];
 var turn = 0;
@@ -30,6 +31,10 @@ const pi = 3.14159;
 bombplacement();
 health_bar_update();
 update_control_bar();
+
+function pxtoVW(px) {
+  return px * (100 / document.documentElement.clientWidth);
+}
 
 function move_name_change() {
   if (current_move[turn] == 2) current_move[turn] = 0;
@@ -65,6 +70,21 @@ function damage() {
 function health_bar_update() {
   health_display[0].style.width = health[0] + "%";
   health_display[1].style.width = health[1] + "%";
+}
+
+function explode(x) {
+  x = x - pxtoVW(64);
+  if (turn) {
+    explosion.style.left = x + "vw";
+    explosion.style.right = "";
+  } else {
+    explosion.style.left = "";
+    explosion.style.right = x + "vw";
+  }
+  explosion.style.display = "block";
+  window.setTimeout(function () {
+    explosion.style.display = "none";
+  }, 2000);
 }
 
 function move_animation(direction) {
@@ -132,6 +152,7 @@ function fire() {
         if (isHitting(x)) damage();
         bombplacement();
         bomb.style.display = "none";
+        explode(x);
         update_control_bar();
       }
     }, 10);
@@ -155,6 +176,7 @@ function fire() {
         if (isHitting(x)) damage();
         bombplacement();
         bomb.style.display = "none";
+        explode(x);
         update_control_bar();
       }
     }, 10);

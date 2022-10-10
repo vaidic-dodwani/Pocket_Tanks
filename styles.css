@@ -46,6 +46,14 @@
   z-index: 5;
   display: none;
 }
+
+#explosion {
+  position: absolute;
+  display: none;
+  bottom: 20vh;
+  z-index: 2;
+}
+
 #tank_facing_right {
   overflow: visible;
   position: absolute;
