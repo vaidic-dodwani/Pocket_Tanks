@@ -62,8 +62,11 @@ function angle_change(increase) {
   }
 }
 
-function damage() {
-  health[turn] -= 20;
+function damage(x) {
+  if (100 - x < dist[turn] + 10 && 100 - x > dist[turn])
+    health[1 + turn * -1] -= 20;
+  else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
+    health[turn] -= 20;
   health_bar_update();
 }
 
@@ -104,11 +107,6 @@ function move_animation(direction) {
   move_display.innerHTML = "Moves:" + move_count[turn];
   update_control_bar();
 }
-
-function isHitting(x) {
-  if (100 - x < dist[turn] + 10 && 100 - x > dist[turn]) return 1;
-  else return 0;
-}
 function update_control_bar() {
   turn_display.innerHTML = "Player " + (turn + 1) + "'s Turn";
   move_display.innerHTML = "Moves:" + move_count[turn];
@@ -119,69 +117,46 @@ function update_control_bar() {
 
 function bombplacement() {
   if (!turn) {
-    bomb.style.bottom = 32 + "vh";
     bomb.style.left = dist[0] + 5 + "vw";
     bomb.style.right = "";
   } else {
-    bomb.style.bottom = 32 + "vh";
     bomb.style.left = "";
     bomb.style.right = dist[1] + 5 + "vw";
   }
+  bomb.style.bottom = 32 + "vh";
 }
 
 function fire() {
-  var time = 0;
-  var y;
-  var x;
+  var time = 0,
+    x,
+    y;
   bomb.style.display = "block";
-  if (!turn) {
-    loopcntrl[0] = setInterval(function () {
-      time += 0.01;
-      x =
-        ((power[0] * Math.cos((angle[0] * pi) / 180)) / 1.5) * time +
-        dist[0] +
-        5;
-      y =
-        ((power[0] * Math.sin((angle[0] * pi) / 180)) / 1.5) * time -
-        0.5 * 10 * time * time +
-        32;
+  loopcntrl[turn] = setInterval(function () {
+    time += 0.01;
+    x =
+      ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
+      dist[turn] +
+      5;
+    y =
+      ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
+      0.5 * 10 * time * time +
+      32;
+    if (!turn) {
       bomb.style.left = x + "vw";
-      bomb.style.bottom = y + "vh";
-      if (y < 20) {
-        clearInterval(loopcntrl[0]);
-        if (isHitting(x)) damage();
-        bombplacement();
-        bomb.style.display = "none";
-        explode(x);
-        update_control_bar();
-      }
-    }, 10);
-    turn = 1;
-  } else {
-    loopcntrl[1] = setInterval(function () {
-      time += 0.01;
-
-      x =
-        ((power[1] * Math.cos((angle[1] * pi) / 180)) / 1.5) * time +
-        dist[1] +
-        5;
-      y =
-        ((power[1] * Math.sin((angle[1] * pi) / 180)) / 1.5) * time -
-        0.5 * 10 * time * time +
-        32;
+    } else {
       bomb.style.right = x + "vw";
-      bomb.style.bottom = y + "vh";
-      if (y < 20) {
-        clearInterval(loopcntrl[1]);
-        if (isHitting(x)) damage();
-        bombplacement();
-        bomb.style.display = "none";
-        explode(x);
-        update_control_bar();
-      }
-    }, 10);
-    turn = 0;
-  }
+    }
+    bomb.style.bottom = y + "vh";
+    if (y < 20) {
+      clearInterval(loopcntrl[turn]);
+      damage(x);
+      turn = turn * -1 + 1;
+      bombplacement();
+      bomb.style.display = "none";
+      explode(x);
+      update_control_bar();
+    }
+  }, 10);
 }
 
 window.addEventListener("keydown", (event) => {
