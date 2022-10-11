@@ -20,6 +20,7 @@ const explosion = document.getElementById("explosion");
 var angle = [45, 45];
 var dist = [10, 10];
 var turn = 0;
+var gameplay = 0;
 var current_move = [0, 0];
 var health = [100, 100];
 var move_name = ["Small Shot", "Medium Shot", "Big Shot"];
@@ -91,6 +92,7 @@ function explode(x) {
 }
 
 function move_animation(direction) {
+  gameplay = 1;
   var checker = 0;
   if (turn) direction *= -1;
   var mover = setInterval(function () {
@@ -101,6 +103,7 @@ function move_animation(direction) {
       clearInterval(mover);
       dist[turn] += 2 * direction;
       bombplacement();
+      gameplay = 0;
     }
   }, 10);
   move_count[turn]--;
@@ -127,6 +130,7 @@ function bombplacement() {
 }
 
 function fire() {
+  gameplay = 1;
   var time = 0,
     x,
     y;
@@ -155,36 +159,39 @@ function fire() {
       bomb.style.display = "none";
       explode(x);
       update_control_bar();
+      gameplay = 0;
     }
   }, 10);
 }
 
 window.addEventListener("keydown", (event) => {
-  switch (event.key) {
-    case "ArrowLeft":
-      if (move_count[turn] > 0) {
-        move_animation(-1);
-      }
-      break;
-    case "ArrowRight":
-      if (move_count[turn] > 0) {
-        move_animation(1);
-      }
-      break;
-    case "ArrowUp":
-      if (power[turn] < 100) power_change(1);
-      break;
-    case "ArrowDown":
-      if (power[turn] > 10) power_change(-1);
-      break;
-    case "z":
-      if (angle[turn] < 90) angle_change(1);
-      break;
-    case "c":
-      if (angle[turn] > 10) angle_change(-1);
-      break;
-    case "p":
-      fire();
-      break;
+  if (!gameplay) {
+    switch (event.key) {
+      case "ArrowLeft":
+        if (move_count[turn] > 0) {
+          move_animation(-1);
+        }
+        break;
+      case "ArrowRight":
+        if (move_count[turn] > 0) {
+          move_animation(1);
+        }
+        break;
+      case "ArrowUp":
+        if (power[turn] < 100) power_change(1);
+        break;
+      case "ArrowDown":
+        if (power[turn] > 10) power_change(-1);
+        break;
+      case "z":
+        if (angle[turn] < 90) angle_change(1);
+        break;
+      case "c":
+        if (angle[turn] > 10) angle_change(-1);
+        break;
+      case "p":
+        fire();
+        break;
+    }
   }
 });

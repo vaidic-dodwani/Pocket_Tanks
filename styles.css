@@ -1,14 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "Silkscreen", cursive;
 }
 
 #status_window {
   display: flex;
-  background-color: aqua;
+  background-color: black;
+  color: white;
   height: 7vh;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 .health_container {
@@ -36,7 +40,7 @@
 }
 
 #game {
-  background-color: cadetblue;
+  background-image: linear-gradient(black, purple);
   height: 80vh;
 }
 
@@ -93,11 +97,13 @@
   display: flex;
   position: absolute;
   justify-content: space-around;
+  align-items: center;
   text-align: center;
   width: 100vw;
   bottom: 0;
   height: 13vh;
-  background-color: saddlebrown;
+  color: white;
+  background-color: rgb(37, 37, 37);
   font-size: 2rem;
 }
 
