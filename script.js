@@ -64,9 +64,9 @@ function angle_change(increase) {
 
 function damage(x) {
   if (100 - x < dist[turn] + 10 && 100 - x > dist[turn])
-    health[1 + turn * -1] -= 20;
+    health[1 + turn * -1] -= 20 + current_move[turn] * 10;
   else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
-    health[turn] -= 20;
+    health[turn] -= 20 + current_move[turn] * 10;
   health_bar_update();
 }
 
