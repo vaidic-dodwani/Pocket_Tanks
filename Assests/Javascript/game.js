@@ -29,11 +29,19 @@ var move_count = [5, 5];
 var fire_control;
 const pi = 3.14159;
 var paused = 0;
+const themesound = new Audio("Assests/Sounds/theme.mp3");
 
 bombplacement();
 health_bar_update();
 update_control_bar();
+playtheme();
 
+function playtheme() {
+  themesound.play();
+  setInterval(function () {
+    themesound.play();
+  }, 245000);
+}
 function pxtoVW(px) {
   return px * (100 / document.documentElement.clientWidth);
 }
@@ -242,7 +250,7 @@ window.addEventListener("keydown", (event) => {
       case "c":
         if (angle[turn] > 10) angle_change(-1);
         break;
-      case "p":
+      case "Enter":
         fire();
         break;
     }

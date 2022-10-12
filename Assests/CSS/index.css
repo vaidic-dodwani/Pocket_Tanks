@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: "Gemunu Libre", sans-serif;
+  display: flex;
+  background-image: linear-gradient(black, purple);
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 100vw;
+  min-height: 100vh;
+  height: fit-content;
+  background-color: black;
+  color: white;
+}
+
+#welcome {
+  font-size: 10rem;
+  opacity: 1;
+}
+
+#instructions {
+  font-size: 10rem;
+  display: none;
+  opacity: 0;
+}
+
+#rules {
+  font-size: 2rem;
+  width: 60vw;
+  text-align: center;
+  display: none;
+  opacity: 0;
+  line-height: 8vh;
+}
+
+#go {
+  font-family: "Gemunu Libre", sans-serif;
+  margin: 2rem;
+  font-size: 2rem;
+  padding: 1rem;
+  display: none;
+  opacity: 0;
+}
+
+#atb {
+  font-size: 10rem;
+  display: none;
+  opacity: 0;
+}
+
+@media only screen and (max-width: 615px) {
+  #welcome {
+    font-size: 6rem;
+  }
+  #instructions {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    position: relative;
+    font-size: 5rem;
+    line-height: 4vh;
+  }
+
+  #rules {
+    width: 95vw;
+  }
+
+  #go {
+    margin: 1rem;
+    padding: 0.5rem;
+  }
+}

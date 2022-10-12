@@ -4,67 +4,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Pocket Tanks</title>
+    <link rel="stylesheet" href="Assests/CSS/index.css" />
   </head>
   <body>
-    <div id="overlay">
-      <p id="overlay_text"></p>
-      <button id="overlay_button" onclick="replay_game()"></button>
-    </div>
-    <div id="status_window">
-      <div class="health_container">
-        <div id="health_bar_1"></div>
-      </div>
-      <p id="turn_display"></p>
-     <div class="health_container">
-        <div id="health_bar_2"></div>
-      </div>
-    </div>
-    <div id="game">
-      <img 
-         id="bomb"
-          src="Assests\Images\grenade.png"
-          alt="bomb"
-        />
-      <img 
-        id="explosion"
-          src="Assests\Images\grenade_explosion.png"
-          alt="explotion"
-        />
-      <div id="tank_facing_right">
-        <img 
-         id="shooter_facing_right"
-          src="Assests\Images\shooter_facing_right.png"
-          alt="shooter facing right"
-        />
-        <img
-          id="body_facing_right"
-          src="Assests\Images\tank_facing_right.png"
-          alt="body facing right"
-        />
-        
-        </div>
-      <div id="tank_facing_left">
-      <img 
-        id="shooter_facing_left"
-        src="Assests\Images\shooter_facing_left.png"
-        alt="shooter facing left"
-      />
-      <img
-        id="body_facing_left"
-        src="Assests\Images\tank_facing_left.png"
-        alt="body facing left"
-      />
-      
-    </div>
-    <div id="controls">
-      <p id="move_display">Move: 5
-      </p>
-      <p id="move_name_display" onclick="move_name_change()">Small Shot</p>
-      <p id="power_display">Power: 50</p>
-      <p id="angle_display">Angle</p>
-    </div>
-    <script src="script.js"></script>
+    <p id="logo" onclick="checkgosecond()">
+      <img src="Assests/Images/logo.png" />
+    </p>
+    <p id="instructions">Instructions</p>
+    <p id="rules">
+      1.) Use the Arrow Up To Increase Power<br />2.)Use the Arrow Down To
+      Decrease Power<br />3.)Use the Arrow Left and Right To Move Your Tank<br />4.)Press
+      Z or C to increase or decrease angle by 1<br />5.)Press Enter to fire.<br />6.)Click
+      On Move name to change the move.
+    </p>
+    <button id="go" onclick="gothird()">Let's Go!!!</button>
+    <p id="atb">All The Best!!</p>
   </body>
+  <script src="Assests/Javascript/index.js"></script>
 </html>
