@@ -12,7 +12,6 @@
   height: 100vh;
   width: 100vw;
   position: absolute;
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -21,13 +20,15 @@
 }
 #overlay_text {
   display: none;
-  font-size: 10rem;
+  font-size: 8rem;
+  color: white;
 }
 #overlay_button {
   display: none;
   font-size: 5rem;
   font-family: "Silkscreen", cursive;
   background: none;
+  color: white;
   cursor: pointer;
   padding: 1rem;
 }

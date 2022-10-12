@@ -26,7 +26,7 @@ var health = [100, 100];
 var move_name = ["Grenade", "Bomb", "Dynamite"];
 var power = [50, 50];
 var move_count = [5, 5];
-var loopcntrl = [0, 0];
+var fire_control;
 const pi = 3.14159;
 var paused = 0;
 
@@ -45,14 +45,6 @@ function move_name_change() {
     move_name_display.innerHTML = move_name[current_move[turn]];
     bombImageSetter();
   }
-}
-
-function replay_game() {
-  gameplay = 0;
-  overlay.style.display = "none";
-  overlay_text.style.display = "none";
-  overlay_button.style.display = "none";
-  paused = 0;
 }
 
 function power_change(increase) {
@@ -82,23 +74,42 @@ function damage(x) {
   health_bar_update();
 }
 
-function stop_game(isRestart) {
+function stop_game(isRestart, tanktolose = 0) {
   overlay.style.display = "flex";
   overlay_text.style.display = "block";
   overlay_button.style.display = "block";
   if (isRestart) {
     health = [100, 100];
-    overlay_text.innerHTML = "GAME OVER";
+    overlay_text.innerHTML = "Player " + (tanktolose * -1 + 2) + " Wins";
     overlay_button.innerHTML = "Try Again";
+    turn = 0;
+    current_move = [0, 0];
+    power = [50, 50];
+    move_count = [5, 5];
+    angle = [45, 45];
+    dist = [10, 10];
+    bombplacement();
     health_bar_update();
+    update_control_bar();
   } else {
     overlay_text.innerHTML = "PAUSED";
     overlay_button.innerHTML = "RESUME";
   }
-  gameplay = 1;
+  window.setTimeout(function () {
+    gameplay = 1;
+  }, 500);
+}
+function replay_game() {
+  gameplay = 0;
+  overlay.style.display = "none";
+  overlay_text.style.display = "none";
+  overlay_button.style.display = "none";
+  paused = 0;
 }
 
 function health_bar_update() {
+  if (health[0] <= 0) stop_game(1);
+  if (health[1] <= 0) stop_game(1, 1);
   health_display[0].style.width = health[0] + "%";
   health_display[1].style.width = health[1] + "%";
 }
@@ -177,7 +188,7 @@ function fire() {
     x,
     y;
   bomb.style.display = "block";
-  loopcntrl[turn] = setInterval(function () {
+  fire_control = setInterval(function () {
     time += 0.01;
     x =
       ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
@@ -194,14 +205,14 @@ function fire() {
     }
     bomb.style.bottom = y + "vh";
     if (y < 20) {
-      clearInterval(loopcntrl[turn]);
+      clearInterval(fire_control);
       damage(x);
       bomb.style.display = "none";
       explode(x);
       turn = turn * -1 + 1;
       bombplacement();
       update_control_bar();
-      gameplay = 0;
+      if (!paused) gameplay = 0;
     }
   }, 10);
 }
