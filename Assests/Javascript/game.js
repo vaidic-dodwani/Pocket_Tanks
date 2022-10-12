@@ -30,6 +30,8 @@ var fire_control;
 const pi = 3.14159;
 var paused = 0;
 const themesound = new Audio("Assests/Sounds/theme.mp3");
+const fire_audio = new Audio("Assests/Sounds/fire.mp3");
+const explosion_audio = new Audio("Assests/Sounds/explosion.mp3");
 
 bombplacement();
 health_bar_update();
@@ -132,6 +134,7 @@ function explode(x) {
     explosion.style.right = x + "vw";
   }
   explosion.style.display = "block";
+  explosion_audio.play();
   window.setTimeout(function () {
     explosion.style.display = "none";
   }, 2000);
@@ -192,10 +195,12 @@ function bombImageSetter() {
 
 function fire() {
   gameplay = 1;
+  fire_audio.play();
   var time = 0,
     x,
     y;
   bomb.style.display = "block";
+
   fire_control = setInterval(function () {
     time += 0.01;
     x =
