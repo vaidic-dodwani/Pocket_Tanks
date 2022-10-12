@@ -23,11 +23,12 @@ var turn = 0;
 var gameplay = 0;
 var current_move = [0, 0];
 var health = [100, 100];
-var move_name = ["Small Shot", "Medium Shot", "Big Shot"];
+var move_name = ["Grenade", "Bomb", "Dynamite"];
 var power = [50, 50];
 var move_count = [5, 5];
 var loopcntrl = [0, 0];
 const pi = 3.14159;
+var paused = 0;
 
 bombplacement();
 health_bar_update();
@@ -38,10 +39,20 @@ function pxtoVW(px) {
 }
 
 function move_name_change() {
-  if (current_move[turn] == 2) current_move[turn] = 0;
-  else current_move[turn]++;
+  if (!gameplay) {
+    if (current_move[turn] == 2) current_move[turn] = 0;
+    else current_move[turn]++;
+    move_name_display.innerHTML = move_name[current_move[turn]];
+    bombImageSetter();
+  }
+}
 
-  move_name_display.innerHTML = move_name[current_move[turn]];
+function replay_game() {
+  gameplay = 0;
+  overlay.style.display = "none";
+  overlay_text.style.display = "none";
+  overlay_button.style.display = "none";
+  paused = 0;
 }
 
 function power_change(increase) {
@@ -71,6 +82,22 @@ function damage(x) {
   health_bar_update();
 }
 
+function stop_game(isRestart) {
+  overlay.style.display = "flex";
+  overlay_text.style.display = "block";
+  overlay_button.style.display = "block";
+  if (isRestart) {
+    health = [100, 100];
+    overlay_text.innerHTML = "GAME OVER";
+    overlay_button.innerHTML = "Try Again";
+    health_bar_update();
+  } else {
+    overlay_text.innerHTML = "PAUSED";
+    overlay_button.innerHTML = "RESUME";
+  }
+  gameplay = 1;
+}
+
 function health_bar_update() {
   health_display[0].style.width = health[0] + "%";
   health_display[1].style.width = health[1] + "%";
@@ -78,7 +105,7 @@ function health_bar_update() {
 
 function explode(x) {
   x = x - pxtoVW(64);
-  if (turn) {
+  if (!turn) {
     explosion.style.left = x + "vw";
     explosion.style.right = "";
   } else {
@@ -129,6 +156,21 @@ function bombplacement() {
   bomb.style.bottom = 32 + "vh";
 }
 
+function bombImageSetter() {
+  if (current_move[turn] == 0) {
+    bomb.src = "Assests/Images/grenade.png";
+    explosion.src = "Assests/Images/grenade_explosion.png";
+  }
+  if (current_move[turn] == 1) {
+    bomb.src = "Assests/Images/bomb.png";
+    explosion.src = "Assests/Images/bomb_explosion.png";
+  }
+  if (current_move[turn] == 2) {
+    bomb.src = "Assests/Images/dynamite.png";
+    explosion.src = "Assests/Images/dynamite_explosion.png";
+  }
+}
+
 function fire() {
   gameplay = 1;
   var time = 0,
@@ -154,10 +196,10 @@ function fire() {
     if (y < 20) {
       clearInterval(loopcntrl[turn]);
       damage(x);
-      turn = turn * -1 + 1;
-      bombplacement();
       bomb.style.display = "none";
       explode(x);
+      turn = turn * -1 + 1;
+      bombplacement();
       update_control_bar();
       gameplay = 0;
     }
@@ -193,5 +235,15 @@ window.addEventListener("keydown", (event) => {
         fire();
         break;
     }
+  }
+
+  switch (event.key) {
+    case " ":
+      if (paused != 1) {
+        stop_game(0);
+        paused = 1;
+      } else {
+        replay_game();
+      }
   }
 });

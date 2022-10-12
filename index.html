@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="overlay">
+      <p id="overlay_text"></p>
+      <button id="overlay_button" onclick="replay_game()"></button>
+    </div>
     <div id="status_window">
       <div class="health_container">
         <div id="health_bar_1"></div>
@@ -20,12 +24,12 @@
     <div id="game">
       <img 
          id="bomb"
-          src="Assests\Images\bomb.png"
+          src="Assests\Images\grenade.png"
           alt="bomb"
         />
       <img 
         id="explosion"
-          src="Assests/Images/explosion.png"
+          src="Assests\Images\grenade_explosion.png"
           alt="explotion"
         />
       <div id="tank_facing_right">
