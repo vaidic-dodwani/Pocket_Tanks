@@ -23,7 +23,7 @@ var turn = 0;
 var gameplay = 0;
 var current_move = [0, 0];
 var ammo = [
-  [50, 3, 1],
+  [50, 3, 2],
   [50, 3, 2],
 ];
 var health = [100, 100];
