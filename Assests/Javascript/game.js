@@ -76,12 +76,48 @@ function angle_change(increase) {
   }
 }
 
-function damage(x) {
-  if (100 - x < dist[turn] + 10 && 100 - x > dist[turn])
-    health[1 + turn * -1] -= 20 + current_move[turn] * 10;
-  else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
-    health[turn] -= 20 + current_move[turn] * 10;
+function damage(x, y) {
+  if (
+    (x > 90 - dist[turn * -1 + 1] && x < 100 - dist[turn * -1 + 1] && y < 28) ||
+    y < 18
+  ) {
+    clearInterval(fire_control);
+    bomb.style.display = "none";
+    explode(x);
+    turn = turn * -1 + 1;
+    bombplacement();
+    update_control_bar();
+    if (!paused) gameplay = 0;
+  }
   health_bar_update();
+}
+
+function fire() {
+  gameplay = 1;
+  fire_audio.play();
+  var time = 0,
+    x,
+    y;
+  bomb.style.display = "block";
+
+  fire_control = setInterval(function () {
+    time += 0.01;
+    x =
+      ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
+      dist[turn] +
+      5;
+    y =
+      ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
+      0.5 * 10 * time * time +
+      32;
+    if (!turn) {
+      bomb.style.left = x + "vw";
+    } else {
+      bomb.style.right = x + "vw";
+    }
+    bomb.style.bottom = y + "vh";
+    damage(x, y);
+  }, 10);
 }
 
 function stop_game(isRestart, tanktolose = 0) {
@@ -133,10 +169,12 @@ function explode(x) {
     explosion.style.left = "";
     explosion.style.right = x + "vw";
   }
+  tank[turn * -1 + 1].style.display = "none";
   explosion.style.display = "block";
   explosion_audio.play();
   window.setTimeout(function () {
     explosion.style.display = "none";
+    tank[turn].style.display = "block";
   }, 2000);
 }
 
@@ -193,6 +231,7 @@ function bombImageSetter() {
   }
 }
 
+<<<<<<< HEAD
 function fire() {
   gameplay = 1;
   fire_audio.play();
@@ -231,6 +270,8 @@ function fire() {
   }, 10);
 }
 
+=======
+>>>>>>> mechanics
 window.addEventListener("keydown", (event) => {
   if (!gameplay) {
     switch (event.key) {
