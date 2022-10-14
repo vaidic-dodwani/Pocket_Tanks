@@ -111,28 +111,20 @@ function damage(x, y) {
     y < 18
   ) {
     clearInterval(fire_control);
-<<<<<<< HEAD
-=======
     if (100 - x < dist[turn * -1 + 1] + 10 && 100 - x > dist[turn * -1 + 1])
       health[1 + turn * -1] -= 20 + current_move[turn] * 10;
     else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
       health[turn] -= 20 + current_move[turn] * 10;
     ammo[turn][current_move[turn]]--;
->>>>>>> bugFix
     bomb.style.display = "none";
     explode(x);
     turn = turn * -1 + 1;
     bombplacement();
     update_control_bar();
-<<<<<<< HEAD
-    if (!paused) gameplay = 0;
-  }
-=======
     bombImageSetter();
     if (!paused) gameplay = 0;
   }
 
->>>>>>> bugFix
   health_bar_update();
 }
 
@@ -205,12 +197,10 @@ function explode(x) {
     explosion.style.left = "";
     explosion.style.right = x + "vw";
   }
-  tank[turn * -1 + 1].style.display = "none";
   explosion.style.display = "block";
   explosion_audio.play();
   window.setTimeout(function () {
     explosion.style.display = "none";
-    tank[turn].style.display = "block";
   }, 2000);
 }
 
@@ -273,50 +263,6 @@ function bombImageSetter() {
   }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-function fire() {
-  gameplay = 1;
-  fire_audio.play();
-  var time = 0,
-    x,
-    y;
-  bomb.style.display = "block";
-
-  fire_control = setInterval(function () {
-    time += 0.01;
-    x =
-      ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
-      dist[turn] +
-      5 -
-      pxtoVW(32);
-    y =
-      ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
-      0.5 * 10 * time * time +
-      32;
-    if (!turn) {
-      bomb.style.left = x + "vw";
-    } else {
-      bomb.style.right = x + "vw";
-    }
-    bomb.style.bottom = y + "vh";
-    if (y < 20) {
-      clearInterval(fire_control);
-      damage(x);
-      bomb.style.display = "none";
-      explode(x);
-      turn = turn * -1 + 1;
-      bombplacement();
-      update_control_bar();
-      if (!paused) gameplay = 0;
-    }
-  }, 10);
-}
-
-=======
->>>>>>> mechanics
-=======
->>>>>>> bugFix
 window.addEventListener("keydown", (event) => {
   if (!gameplay) {
     switch (event.key) {
