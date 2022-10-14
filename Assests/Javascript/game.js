@@ -206,7 +206,8 @@ function fire() {
     x =
       ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
       dist[turn] +
-      5;
+      5 -
+      pxtoVW(32);
     y =
       ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
       0.5 * 10 * time * time +
