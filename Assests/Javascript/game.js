@@ -22,6 +22,7 @@ var dist = [10, 10];
 var turn = 0;
 var gameplay = 0;
 var current_move = [0, 0];
+var ammo = [[50, 3, 1], [50, 3, 2], fire];
 var health = [100, 100];
 var move_name = ["Grenade", "Bomb", "Dynamite"];
 var power = [50, 50];
@@ -38,6 +39,28 @@ health_bar_update();
 update_control_bar();
 playtheme();
 
+function game_reset() {
+  angle = [45, 45];
+  dist = [10, 10];
+  turn = 0;
+  gameplay = 0;
+  current_move = [0, 0];
+  ammo = [
+    [50, 3, 2],
+    [50, 3, 2],
+  ];
+  health = [100, 100];
+  power = [50, 50];
+  move_count = [5, 5];
+  shooter[0].style.rotate = -angle[0] + "deg";
+  shooter[1].style.rotate = angle[1] + "deg";
+  tank[0].style.left = dist[0] + "vw";
+  tank[1].style.right = dist[1] + "vw";
+  update_control_bar();
+
+  health_bar_update();
+}
+
 function playtheme() {
   themesound.play();
   setInterval(function () {
@@ -52,7 +75,13 @@ function move_name_change() {
   if (!gameplay) {
     if (current_move[turn] == 2) current_move[turn] = 0;
     else current_move[turn]++;
-    move_name_display.innerHTML = move_name[current_move[turn]];
+    if (current_move[turn]) {
+      move_name_display.innerHTML =
+        move_name[current_move[turn]] +
+        "(" +
+        ammo[turn][current_move[turn]] +
+        ")";
+    } else move_name_display.innerHTML = "Grenade";
     bombImageSetter();
   }
 }
@@ -76,12 +105,55 @@ function angle_change(increase) {
   }
 }
 
-function damage(x) {
-  if (100 - x < dist[turn] + 10 && 100 - x > dist[turn])
-    health[1 + turn * -1] -= 20 + current_move[turn] * 10;
-  else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
-    health[turn] -= 20 + current_move[turn] * 10;
+function damage(x, y) {
+  if (
+    (x > 90 - dist[turn * -1 + 1] && x < 100 - dist[turn * -1 + 1] && y < 28) ||
+    y < 18
+  ) {
+    clearInterval(fire_control);
+    if (100 - x < dist[turn * -1 + 1] + 10 && 100 - x > dist[turn * -1 + 1])
+      health[1 + turn * -1] -= 20 + current_move[turn] * 10;
+    else if (x < dist[turn * -1 + 1] + 10 && x > dist[turn * -1 + 1])
+      health[turn] -= 20 + current_move[turn] * 10;
+    ammo[turn][current_move[turn]]--;
+    bomb.style.display = "none";
+    explode(x);
+    turn = turn * -1 + 1;
+    bombplacement();
+    update_control_bar();
+    bombImageSetter();
+    if (!paused) gameplay = 0;
+  }
+
   health_bar_update();
+}
+
+function fire() {
+  gameplay = 1;
+  fire_audio.play();
+  var time = 0,
+    x,
+    y;
+  bomb.style.display = "block";
+
+  fire_control = setInterval(function () {
+    time += 0.01;
+    x =
+      ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
+      dist[turn] +
+      5;
+    y =
+      ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
+      0.5 * 10 * time * time +
+      32;
+    if (!turn) {
+      bomb.style.left = x + "vw";
+    } else {
+      bomb.style.right = x + "vw";
+    }
+    bomb.style.bottom = y + "vh";
+    damage(x, y);
+  }, 10);
 }
 
 function stop_game(isRestart, tanktolose = 0) {
@@ -92,15 +164,7 @@ function stop_game(isRestart, tanktolose = 0) {
     health = [100, 100];
     overlay_text.innerHTML = "Player " + (tanktolose * -1 + 2) + " Wins";
     overlay_button.innerHTML = "Try Again";
-    turn = 0;
-    current_move = [0, 0];
-    power = [50, 50];
-    move_count = [5, 5];
-    angle = [45, 45];
-    dist = [10, 10];
-    bombplacement();
-    health_bar_update();
-    update_control_bar();
+    game_reset();
   } else {
     overlay_text.innerHTML = "PAUSED";
     overlay_button.innerHTML = "RESUME";
@@ -162,7 +226,13 @@ function move_animation(direction) {
 function update_control_bar() {
   turn_display.innerHTML = "Player " + (turn + 1) + "'s Turn";
   move_display.innerHTML = "Moves:" + move_count[turn];
-  move_name_display.innerHTML = move_name[current_move[turn]];
+  if (current_move[turn]) {
+    move_name_display.innerHTML =
+      move_name[current_move[turn]] +
+      "(" +
+      ammo[turn][current_move[turn]] +
+      ")";
+  } else move_name_display.innerHTML = "Grenade";
   power_display.innerHTML = "Power: " + power[turn];
   angle_display.innerHTML = "Angle: " + angle[turn];
 }
@@ -193,44 +263,6 @@ function bombImageSetter() {
   }
 }
 
-function fire() {
-  gameplay = 1;
-  fire_audio.play();
-  var time = 0,
-    x,
-    y;
-  bomb.style.display = "block";
-
-  fire_control = setInterval(function () {
-    time += 0.01;
-    x =
-      ((power[turn] * Math.cos((angle[turn] * pi) / 180)) / 1.5) * time +
-      dist[turn] +
-      5 -
-      pxtoVW(32);
-    y =
-      ((power[turn] * Math.sin((angle[turn] * pi) / 180)) / 1.5) * time -
-      0.5 * 10 * time * time +
-      32;
-    if (!turn) {
-      bomb.style.left = x + "vw";
-    } else {
-      bomb.style.right = x + "vw";
-    }
-    bomb.style.bottom = y + "vh";
-    if (y < 20) {
-      clearInterval(fire_control);
-      damage(x);
-      bomb.style.display = "none";
-      explode(x);
-      turn = turn * -1 + 1;
-      bombplacement();
-      update_control_bar();
-      if (!paused) gameplay = 0;
-    }
-  }, 10);
-}
-
 window.addEventListener("keydown", (event) => {
   if (!gameplay) {
     switch (event.key) {
@@ -257,7 +289,7 @@ window.addEventListener("keydown", (event) => {
         if (angle[turn] > 10) angle_change(-1);
         break;
       case "Enter":
-        fire();
+        if (ammo[turn][current_move[turn]]) fire();
         break;
     }
   }
