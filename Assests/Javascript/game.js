@@ -31,7 +31,13 @@ const pi = 3.14159;
 var paused = 0;
 const themesound = new Audio("Assests/Sounds/theme.mp3");
 const fire_audio = new Audio("Assests/Sounds/fire.mp3");
-const explosion_audio = new Audio("Assests/Sounds/explosion.mp3");
+
+var playingSounds = []
+
+function explosion_audio(){
+  playingSounds.push(new Audio("Assests/Sounds/explosion.mp3"))
+  playingSounds[playingSounds.length-1].play()
+}
 
 bombplacement();
 health_bar_update();
@@ -134,7 +140,7 @@ function explode(x) {
     explosion.style.right = x + "vw";
   }
   explosion.style.display = "block";
-  explosion_audio.play();
+  explosion_audio();
   window.setTimeout(function () {
     explosion.style.display = "none";
   }, 2000);
