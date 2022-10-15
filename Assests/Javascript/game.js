@@ -110,7 +110,7 @@ function angle_change(increase) {
 
 function damage(x, y) {
   if (
-    (x > 90 - dist[turn * -1 + 1] && x < 100 - dist[turn * -1 + 1] && y < 28) ||
+    (x > 90 - dist[turn * -1 + 1] && x < 100 - dist[turn * -1 + 1] && y < 29) ||
     y < 18
   ) {
     clearInterval(fire_control);
